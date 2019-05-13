@@ -1,0 +1,30 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: changeme
+    context: .
+    docker: {}
+  tagPolicy:
+    envTemplate:
+      template: '{{.DOCKER_REGISTRY}}/denispalnitsky/maven-service-classic:{{.VERSION}}'
+  local: {}
+deploy:
+  kubectl: {}
+profiles:
+- name: dev
+  build:
+    artifacts:
+    - docker: {}
+    tagPolicy:
+      envTemplate:
+        template: '{{.DOCKER_REGISTRY}}/denispalnitsky/maven-service-classic:{{.DIGEST_HEX}}'
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: maven-service-classic
+        chartPath: charts/maven-service-classic
+        setValueTemplates:
+          image.repository: '{{.DOCKER_REGISTRY}}/denispalnitsky/maven-service-classic'
+          image.tag: '{{.DIGEST_HEX}}'
