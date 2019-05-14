@@ -12,6 +12,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'maven'
 
 bootJar {
     baseName = 'restyserv'
@@ -20,6 +21,9 @@ bootJar {
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://nexus.jx.35.242.180.229.nip.io/repository/maven-releases/"
+    }
 }
 
 sourceCompatibility = 1.8
@@ -28,6 +32,7 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("com.hello.world:hello-world:1.0.4@jar")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')
 }
